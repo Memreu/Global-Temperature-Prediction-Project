@@ -1,27 +1,54 @@
-# Giriş
+# 🌍 GlobalTemperaturePredictionProject
 
-Burada kısaca hangi veri setini seçtiniz, hangi algoritmalarla neler yaptınız vs. gibi projenizi anlatan kısa bilgilendirmeler olmalı. 
-Projenizin teknik anlatımını ise, notebook dosyalarınızın içerisinde, markdown formatındaki hücrelerde yapmalısınız. Sadece hücrelerden, veya sadece hücreler ve onların çıktılarından oluşan notebooklar yeterli değil.
+Bu proje, Global AI Hub kapsamında gerçekleştirilenAkbank Makine Öğrenmesine Giriş Bootcamp programı sürecinde geliştirilmiştir. Amacımız, dünya genelindeki ortalama sıcaklık verilerini analiz ederek gelecekteki sıcaklıkları tahmin eden bir makine öğrenimi modeli geliştirmektir.
 
-# Metrikler
-Projenizde gerçekleştirdiğiniz çalışma sonucunda, ne gibi sonuçlar elde ettiğinizi ve bu sonuçları nasıl yorumladığınızı da anlatmanızı bekliyoruz. Artık ChatGPT, Gemini, Deepseek vb. araçları kullanarak zaten kolayca kod yazdırabiliyorsunuz.
-Bu noktada, yalnızca bir kod yazmış olmanıza değil yazdığınız kodu anlamış, sindirmiş olmanıza da önem veriyoruz. Bu anlamda, yaptığınız çalışmayı yorumlayabilmeniz de bizim için önemli. 
+## 📌 Giriş
 
-# Ekler
-Projeniz kapsamında deployment, end-to-end GPU gibi ekstra çalışmaları da eklerseniz, onları anlatmak için de bu şekilde ayrı bir bölüm eklemenizi bekleriz.
-Örneğin, repoda UI adında bir klasör daha var. Streamlit ile projeyi deploy edebilmeniz için örnek bir script içeriyor.
-**Dikkat: Klasörün içindeki notebook, supervised ve unsupervised notebooklarından farklı. Ancak sizin projenizde, supervised ve (eğer yapmayı tercih ederseniz) unsupervised notebooklarınızı deploy ediyor olacaksınız, farklı bir notebook gerekmiyor.**
+Projede kullanılan veri seti, çeşitli ülkeler için zaman içerisinde ölçülmüş ortalama sıcaklık değerlerini içermektedir. Bu veriler temizlenmiş, ön işleme tabi tutulmuş ve çeşitli makine öğrenimi algoritmaları ile modelleme gerçekleştirilmiştir.
 
-# Sonuç ve Gelecek Çalışmalar
+Çalışmanın ana adımları:
 
-Burası da, yaptığınız çalışma ile ilgili nasıl bir gelecek hayal ettiğinizi gösteren bir bölüm olacak. Unutmayın, buraya koyduğunuz proje bootcampten sonra da sizinle kalmaya devam edecek. Her zaman için yeni bölümler ekleyebilir, değişiklikler yapabilir ve projenizi daha güzel hale getirebilirsiniz. 
+- Veri keşfi ve ön işleme
+- Aykırı değerlerin tespiti ve temizlenmesi
+- Ülkelerin sıcaklık eğilimlerinin incelenmesi
+- Encoding ve özellik mühendisliği
+- Regresyon modellemeleri (Random Forest, Gradient Boosting, vs.)
+- Model değerlendirme ve yorumlama
 
-Projenizi geliştirirken sonrası için şunu düşünün, nasıl daha kaliteli hale getirilebilir? Arayüz mü eklenmeli? Veri toplama aşaması dinamik, gerçek zamanlı mı yapılmalı? Gelecekte öğrenmek istediğiniz teknolojiler ve kariyerinize vermek istediğiniz yön için yazarak düşünmeniz size de belirleyici olacaktır.
+Detaylı teknik açıklamalara `.ipynb` dosyasında Markdown hücreleri ile yer verilmiştir.
 
-# Linkler
+## 📊 Kullanılan Metrikler ve Yorumlar
 
-Çalışmanıza ait tüm Kaggle linklerini mutlaka burada görmeliyiz.
+Modelin başarımını değerlendirmek için aşağıdaki metrikler kullanılmıştır:
 
-https://www.kaggle.com/code/goker67/decision-trees-acc-metrics-feature-selection
+- **MAE (Mean Absolute Error):** 7.13  
+- **MSE (Mean Squared Error):** 97.22  
+- **R² Skoru:** 0.73  
 
-https://www.kaggle.com/code/goker67/everything-on-gpu-ml-with-cuml-polars-cupy
+> R² skorunun 0.73 olması, modelin sıcaklık verilerindeki varyansın %73’ünü açıklayabildiğini göstermektedir. MAE’nin 7.13 olması ise, modelin ortalama 7°F'lik bir hata ile tahmin yaptığını ortaya koymaktadır. Bu sonuçlar modelin genel sıcaklık trendlerini başarıyla öğrenebildiğini göstermektedir.
+
+Daha iyi sonuçlar elde etmek için hiperparametre ayarları, veri zenginleştirme ve feature engineering gibi alanlarda geliştirmeler yapılabilir.
+
+## 🚀 Ekler
+
+Projeyi genişletmek için aşağıdaki adımlar planlanmaktadır:
+
+- Streamlit veya Gradio gibi araçlarla basit bir kullanıcı arayüzü oluşturmak
+- Gerçek zamanlı sıcaklık verilerini API üzerinden almak ve modeli güncel veriyle test etmek
+- Veri setini bölgesel detaylara göre genişletmek (şehir, kıta bazlı)
+
+## 🔮 Sonuç ve Gelecek Çalışmalar
+
+Bu çalışma, küresel sıcaklıkların zaman içindeki değişimini anlamaya ve gelecekteki değerleri tahmin etmeye yönelik başarılı bir ilk adım olmuştur. Gelecekte aşağıdaki alanlarda geliştirme hedeflenmektedir:
+
+- Modelin hassasiyetini artırmak için mevsimsel ve coğrafi faktörlerin daha detaylı incelenmesi
+- Farklı model türlerinin denenmesi (LSTM, Prophet gibi zaman serisi modelleri)
+- Modelin web tabanlı bir arayüz ile son kullanıcıya sunulması
+
+Projeyi zaman içinde geliştirerek hem teknik yetkinliğimi artırmak hem de sürdürülebilir çevre projelerine katkı sağlamak istiyorum.
+
+---
+
+## Kaggle Linki
+
+https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject
