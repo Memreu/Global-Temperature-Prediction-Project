@@ -52,3 +52,4 @@ Projeyi zaman içinde geliştirerek hem teknik yetkinliğimi artırmak hem de s�
 ## Kaggle Linki
 
 https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject
+https://www.kaggle.com/code/kerembey/globaltemperaturepredictionproject
