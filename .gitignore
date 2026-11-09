@@ -1,0 +1,14 @@
+# Zip'ten çıkarılan ham veri (~140 MB)
+GlobalLandTemperaturesByCountry.csv
+
+# Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db
