@@ -2,8 +2,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/scikit--learn-Random_Forest-F7931E?logo=scikitlearn&logoColor=white" alt="scikit-learn">
-  <img src="https://img.shields.io/badge/R²-0.73-29A36A" alt="R2">
+  <img src="https://img.shields.io/badge/scikit--learn-gradient_boosting-F7931E?logo=scikitlearn&logoColor=white" alt="scikit-learn">
+  <img src="https://img.shields.io/badge/ertesi_gün_MAE-1,79_°C-29A36A" alt="MAE">
   <img src="https://img.shields.io/badge/veri-2,8M_günlük_ölçüm-E4572E" alt="Veri">
   <img src="https://img.shields.io/badge/lisans-MIT-lightgrey" alt="MIT">
 </p>
@@ -13,11 +13,11 @@
   <a href="https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject"><img src="https://img.shields.io/badge/Kaggle-notebook-20BEFF?logo=kaggle&logoColor=white" alt="Kaggle"></a>
 </p>
 
-125 ülkedeki 321 şehirden 1995–2020 arasında toplanmış **2,8 milyon günlük sıcaklık ölçümünü** inceleyen ve ülke + yıl + ay bilgisinden günlük ortalama sıcaklığı tahmin eden bir makine öğrenmesi projesi. *Global AI Hub × Akbank Makine Öğrenmesine Giriş Bootcamp'i* kapsamında geliştirildi.
+125 ülkedeki 321 şehirden 1995–2020 arasında toplanmış **2,8 milyon günlük sıcaklık ölçümünü** inceleyen ve günlük ortalama sıcaklığı **zamana dayalı bir test düzeniyle** tahmin eden bir makine öğrenmesi projesi. *Global AI Hub × Akbank Makine Öğrenmesine Giriş Bootcamp'i* kapsamında geliştirildi.
 
 <p align="center"><img src="images/02_trend_ve_mevsimsellik.png" width="95%"></p>
 
-> 🇬🇧 **In English:** An exploratory and predictive analysis of 2.8M daily temperature records from 321 cities in 125 countries (1995–2020). After cleaning missing-value placeholders, a grid-searched Random Forest predicts daily average temperature from country, year and month with **R² = 0.73** and **MAE ≈ 4 °C**. A follow-up check shows that country × month averages alone explain 73% of the variance, i.e. the model mainly learns each country's seasonal climate normal. The data also shows warming in every region, strongest in the Middle East (+1.3 °C in 2015–19 vs. 1995–2004).
+> 🇬🇧 **In English:** An analysis of 2.8M daily temperature records from 125 countries (1995–2019). The first version reported R² = 0.73 for a Random Forest on country, year and month, but with a random train/test split. Re-evaluated on a time-based split (train 1995–2015, test 2016–2019), that model is slightly *worse* than simply using each country's monthly mean (MAE 4.14 vs 3.97 °C). City-level climatology brings MAE to 2.80 °C, and a next-day gradient-boosting forecast using the last few days' observations reaches **MAE 1.79 °C**, beating the "tomorrow = today" baseline by 7% (paired city-bootstrap 95% CI for the difference: −0.15 to −0.13 °C). The data also shows warming in every region, strongest in the Middle East (+1.3 °C in 2015–19 vs. 1995–2004).
 
 <details>
 <summary><b>📑 İçindekiler</b></summary>
@@ -35,17 +35,32 @@
 
 ## Öne çıkan sonuçlar
 
-| | Sonuç |
-|---|---|
-| 🧹 **Veri temizliği** | Eksik ölçümü ifade eden 79.672 adet `-99` değeri çıkarıldı; 2.826.655 ölçüm kaldı |
-| 🌲 **Model** | Izgara aramayla ayarlanmış Random Forest (200 ağaç, derinlik 20) |
-| 🎯 **Performans** | **R² 0,73** · MAE 7,13 °F (**≈ 4,0 °C**) · RMSE 9,86 °F (≈ 5,5 °C) |
-| 🔍 **Ne öğreniyor?** | Ülke × ay ortalaması tek başına varyansın **%73**'ünü açıklıyor: model esasen her ülkenin mevsimsel iklim normalini öğreniyor |
-| 🌡️ **Isınma** | 2015–19 döneminde her bölge 1995–2004 ortalamasından daha sıcak; en büyük artış Orta Doğu'da (**+1,3 °C**) |
+Test dönemi 2016–2019, eğitim 1995–2015. Köşeli parantezler şehir düzeyinde bootstrap ile %95 güven aralığı.
+
+| Soru | Model | Test MAE (°C) |
+|---|---|---|
+| Yakın geçmiş yok (ülke, yıl, ay) | Ülke × ay klimatolojisi | 3,97 [3,73; 4,24] |
+| | Random Forest (ilk sürüm kurulumu) | 4,14 [3,91; 4,39] |
+| | Şehir × ay klimatolojisi | 2,80 [2,67; 2,91] |
+| Ertesi gün tahmini | "Bugün = dün" (persistence) | 1,92 [1,84; 2,01] |
+| | **Gradient boosting** | **1,79 [1,71; 1,87]** |
+
+<p align="center"><img src="images/03_model_karsilastirma.png" width="85%"></p>
+
+### İlk sürümden bu yana neler değişti?
+
+İlk sürüm rastgele bölmeyle **R² 0,73** raporluyordu. Rastgele bölmede model test günlerinin öncesini ve sonrasını eğitimde gördüğü için bu bir enterpolasyondu. Bu sürümde:
+
+- Eğitim ve test **zamana göre** ayrıldı; test seti yalnızca en sonda bir kez açıldı.
+- Modeller **klimatoloji** ve **persistence** temel modelleriyle kıyaslandı.
+- Analiz baştan sona **°C** ile yapıldı (ilk sürümde hedef °F, grafik eksenleri °C idi).
+- Hata metrikleri **şehir düzeyinde bootstrap** güven aralıklarıyla verildi; aynı şehrin günleri bağımsız olmadığı için satır düzeyinde bootstrap aralıkları yapay olarak daraltırdı.
+- Veri temizliğine hatalı yıllar (200, 201), `Day = 0` satırları ve tekrarlanan şehir-gün kayıtları eklendi.
+- Notebook hücre sırası düzeltildi; baştan sona çalışıyor.
 
 ## Temel bulgular
 
-1. **Sıcaklığın büyük kısmı coğrafya ve mevsimle açıklanıyor.** Aynı ülkenin aynı ayındaki günler birbirine çok benziyor. Bu yüzden yalnızca ülke, yıl ve ay bilgisiyle R² 0,73'e ulaşmak mümkün; kalan varyans günlük hava değişkenliğinden geliyor.
+1. **Sıcaklığın büyük kısmı coğrafya ve mevsimle açıklanıyor.** Aynı ülkenin aynı ayındaki günler birbirine çok benziyor. Ülke × ay ortalaması varyansın %73'ünü, şehir × ay ortalaması %87'sini açıklıyor; kalan kısım günlük hava değişkenliği.
 2. **Isınma tüm bölgelerde görülüyor ama hızı farklı.** 2015–19 ortalaması 1995–2004'e göre Orta Doğu'da +1,3 °C, Kuzey Amerika'da +1,0 °C, Güney/Orta Amerika'da +0,9 °C, Asya ve Avrupa'da ise +0,3 °C daha yüksek.
 3. **Mevsimsellik bölgeye göre çok farklı.** Kış ile yaz arasındaki fark Avrupa'da ~19 °C, Kuzey Amerika'da ~23 °C iken, Afrika ve Güney/Orta Amerika'da yıl boyunca sıcaklık neredeyse sabit; Avustralya'da ise mevsimler ters.
 4. **En sıcak ve en soğuk ülkeler.** Ortalamada Haiti (29,6 °C), Nijerya ve Tayland en sıcak; Moğolistan (−0,9 °C), İzlanda ve Norveç en soğuk ülkeler.
@@ -56,23 +71,31 @@
 
 | Ayar | Değer |
 |---|---|
-| Özellikler | `Year`, `Month`, `CountryEncoded` (LabelEncoder) |
-| Hedef | Günlük ortalama sıcaklık (°F) |
-| Bölme | %80 eğitim / %20 test (rastgele) |
-| Algoritma | `RandomForestRegressor` |
-| Hiperparametre araması | `GridSearchCV` (3 katlı CV): `n_estimators` ∈ {100, 200}, `max_depth` ∈ {10, 20}, `min_samples_split` ∈ {2, 5} |
-| En iyi parametreler | `n_estimators=200`, `max_depth=20`, `min_samples_split=5` |
+| Bölme | Eğitim 1995–2015 · test 2016–2019 (2020 yalnızca Ocak–Mayıs olduğu için dışarıda) |
+| Hedef | Günlük ortalama sıcaklık (°C) |
+| Soru 1 özellikleri | `Year`, `Month`, ülke kodu (ilk sürümün kurulumu) |
+| Soru 2 özellikleri | Son 3 günün sıcaklığı, son 7 günün ortalaması, şehir ve ülke klimatolojisi, dünkü anomali, yılın günü (sin/cos), yıl, bölge |
+| Algoritma | `HistGradientBoostingRegressor` (Soru 2), `RandomForestRegressor` (Soru 1, ilk sürümün hiperparametreleriyle) |
+| Hiperparametre seçimi | Eğitim yılları içinde doğrulama: 1995–2011 eğitim, 2012–2015 doğrulama |
+| Sızıntı önlemleri | Klimatoloji yalnızca eğitim yıllarından; gecikmeli değerler yalnızca gerçekten önceki takvim gününe aitse |
+| Belirsizlik | Şehir düzeyinde bootstrap (1.000 tekrar), modeller arası eşleştirilmiş fark |
+
+<p align="center"><img src="images/04_hata_analizi.png" width="95%"></p>
+
+Ertesi gün hatası kışın en yüksek; Kuzey Amerika, kıtasal iklimdeki büyük günlük dalgalanmalar nedeniyle en zor bölge.
 
 ## Proje akışı
 
 | # | Bölüm | Teknik |
 |---|---|---|
-| 1 | Veri yükleme | 2,9 milyon satırlık günlük şehir verisi |
-| 2 | Keşifçi analiz | Eksik değerler, dağılımlar, ülke bazlı ortalamalar |
-| 3 | Veri temizliği | `-99` yer tutucularının çıkarılması, °F → °C dönüşümü |
-| 4 | Özellik mühendisliği | Ülke kodlama (LabelEncoder) |
-| 5 | Modelleme | Random Forest + GridSearchCV |
-| 6 | Değerlendirme | MAE, MSE, R² ve yorumlar |
+| 1 | Veri | Zip dosyasından doğrudan okuma |
+| 2 | Veri kalitesi | `-99`, hatalı yıllar, `Day = 0`, tekrarlanan kayıtlar; °F → °C |
+| 3 | Keşifçi analiz | Ülke ortalamaları, coğrafya ve mevsimin açıkladığı varyans |
+| 4 | Zamana dayalı bölme | Sızıntısız klimatoloji ve gecikmeli özellikler |
+| 5 | Değerlendirme | MAE, RMSE, R², şehir bootstrap güven aralıkları |
+| 6 | Soru 1 | Klimatoloji temel modelleri ve ilk sürümün Random Forest'ı |
+| 7 | Soru 2 | Persistence ve gradient boosting; eğitim içi doğrulamayla hiperparametre seçimi |
+| 8 | Hata analizi | Bölge ve ay bazında hata ve sapma |
 
 ## Kurulum ve çalıştırma
 
@@ -80,11 +103,10 @@
 git clone https://github.com/Memreu/Global-Temperature-Prediction-Project.git
 cd Global-Temperature-Prediction-Project
 pip install -r requirements.txt
-unzip "Veri Seti.zip"          # GlobalLandTemperaturesByCountry.csv (~140 MB) çıkar
-jupyter lab GlobalTemperaturePredictionProject.ipynb
+jupyter lab GlobalTemperaturePredictionProject.ipynb   # zip dosyasını doğrudan okur, ~3 dakikada çalışır
 ```
 
-README'deki grafikleri yeniden üretmek için (önce zip'i açmış olmalısın):
+İlk iki keşifçi analiz grafiğini yeniden üretmek için (önce `unzip "Veri Seti.zip"`):
 
 ```bash
 python scripts/readme_grafikleri.py
@@ -101,7 +123,7 @@ python scripts/readme_grafikleri.py
 ├── Veri Seti.zip                              # Ham veri (GlobalLandTemperaturesByCountry.csv)
 ├── scripts/
 │   └── readme_grafikleri.py                   # README grafiklerini üreten betik
-├── images/                                    # README grafikleri
+├── images/                                    # README grafikleri (03 ve 04 notebook'ta üretilir)
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -113,10 +135,10 @@ python scripts/readme_grafikleri.py
 
 ## Sınırlılıklar ve sonraki adımlar
 
-- **Bu bir gelecek tahmini değil, bir enterpolasyon.** Eğitim ve test verisi rastgele ayrıldığı için model, test günlerinin hemen öncesini ve sonrasını eğitimde görmüş oluyor. Gerçek bir "gelecek" testi için örneğin 1995–2016 ile eğitip 2017–2020 üzerinde değerlendirmek gerekir.
-- **Güçlü bir temel modelle karşılaştırılmalı.** "Ülkenin o aydaki geçmiş ortalaması" gibi basit bir tahmin zaten R² ≈ 0,73 veriyor; modelin değeri bu temel modeli ne kadar geçtiğiyle ölçülmeli.
-- **Zaman serisi yaklaşımı.** Gecikmeli (lag) sıcaklıklar, hareketli ortalamalar ve enlem/boylam gibi coğrafi özelliklerle; ya da Prophet, SARIMA veya LSTM gibi zaman serisi modelleriyle günlük değişkenlik de yakalanabilir.
-- **Arayüz.** Modeli Streamlit veya Gradio ile basit bir web uygulamasına dönüştürmek planlanan adımlardan biri.
+- **Tek değişken.** Veride yalnızca ortalama sıcaklık var; yağış, nem, rüzgâr ve basınç gibi değişkenler ertesi gün tahminini belirgin biçimde iyileştirebilir.
+- **Örneklem dengesi.** Şehirlerin önemli kısmı ABD'de; bölge sonuçları bu dengesizliği yansıtıyor.
+- **Klimatoloji kayması.** Klimatoloji 1995–2015 ortalaması; ısınma nedeniyle test döneminde biraz soğuk tarafta kalabilir. Modeldeki yıl değişkeni bunu kısmen telafi ediyor.
+- **Zaman serisi modelleri.** Şehir bazında SARIMA veya durum uzayı modelleri gradient boosting ile aynı test düzeninde kıyaslanabilir.
 
 ---
 
