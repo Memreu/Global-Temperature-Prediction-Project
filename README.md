@@ -46,13 +46,13 @@ Ertesi gün tahmininde gradient boosting persistence'ı %7 kadar geçiyor. Eşle
 ## Çalıştırmak için
 
 ```bash
-git clone https://github.com/Memreu/global-temperature-prediction.git
-cd global-temperature-prediction
+git clone https://github.com/Memreu/Global-Temperature-Prediction-Project.git
+cd Global-Temperature-Prediction-Project
 pip install -r requirements.txt
 jupyter lab GlobalTemperaturePredictionProject.ipynb
 ```
 
-Notebook yaklaşık 3 dakikada baştan sona çalışıyor. İlk iki keşifçi grafiği yeniden üretmek için önce `unzip "Veri Seti.zip"`, sonra `python scripts/readme_grafikleri.py` yeterli. Kurulum yapmadan bakmak isterseniz [nbviewer](https://nbviewer.org/github/Memreu/global-temperature-prediction/blob/main/GlobalTemperaturePredictionProject.ipynb) veya Kaggle sürümleri ([memreu](https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject), [kerembey](https://www.kaggle.com/code/kerembey/globaltemperaturepredictionproject)) var.
+Notebook yaklaşık 3 dakikada baştan sona çalışıyor. İlk iki keşifçi grafiği yeniden üretmek için önce `unzip "Veri Seti.zip"`, sonra `python scripts/readme_grafikleri.py` yeterli. Kurulum yapmadan bakmak isterseniz [nbviewer](https://nbviewer.org/github/Memreu/Global-Temperature-Prediction-Project/blob/main/GlobalTemperaturePredictionProject.ipynb) veya Kaggle sürümleri ([memreu](https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject), [kerembey](https://www.kaggle.com/code/kerembey/globaltemperaturepredictionproject)) var.
 
 ## Sınırlılıklar
 
