@@ -8,7 +8,7 @@ Bu proje, Global AI Hub × Akbank Makine Öğrenmesine Giriş Bootcamp'i sıras�
 
 ## Veri
 
-Veriyi Kaggle'daki [Temperature of All Countries (1995–2020)](https://www.kaggle.com/datasets/subhamjain/temperature-of-all-countries-19952020) setinden aldım. Değişkenler `Region`, `Country`, `State`, `City`, `Month`, `Day`, `Year` ve `AvgTemperature` (°F). Ham dosya repoda `Veri Seti.zip` olarak duruyor, notebook onu doğrudan zip içinden okuyor.
+Veriyi Kaggle'daki [Temperature of All Countries (1995–2020)](https://www.kaggle.com/datasets/subhamjain/temperature-of-all-countries-19952020) setinden aldım. Değişkenler `Region`, `Country`, `State`, `City`, `Month`, `Day`, `Year` ve `AvgTemperature` (°F). Ham dosya repoda [`Veri Seti.zip`](Veri%20Seti.zip) olarak duruyor, notebook onu doğrudan zip içinden okuyor.
 
 Temizlik sırasında eksik ölçümleri gösteren `-99` değerlerini, hatalı yılları (200, 201), `Day = 0` satırlarını ve tekrarlanan şehir-gün kayıtlarını ayıkladım. İlk sürümde hedef °F, grafikler °C idi; bu karışıklığı giderip her şeyi °C'ye çevirdim.
 
@@ -52,7 +52,7 @@ pip install -r requirements.txt
 jupyter lab GlobalTemperaturePredictionProject.ipynb
 ```
 
-Notebook yaklaşık 3 dakikada baştan sona çalışıyor. İlk iki keşifçi grafiği yeniden üretmek için önce `unzip "Veri Seti.zip"`, sonra `python scripts/readme_grafikleri.py` yeterli. Kurulum yapmadan bakmak isterseniz [nbviewer](https://nbviewer.org/github/Memreu/global-temperature-prediction/blob/main/GlobalTemperaturePredictionProject.ipynb) veya [Kaggle](https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject) sürümü var.
+Notebook yaklaşık 3 dakikada baştan sona çalışıyor. İlk iki keşifçi grafiği yeniden üretmek için önce `unzip "Veri Seti.zip"`, sonra `python scripts/readme_grafikleri.py` yeterli. Kurulum yapmadan bakmak isterseniz [nbviewer](https://nbviewer.org/github/Memreu/global-temperature-prediction/blob/main/GlobalTemperaturePredictionProject.ipynb) veya Kaggle sürümleri ([memreu](https://www.kaggle.com/code/memreu/globaltemperaturepredictionproject), [kerembey](https://www.kaggle.com/code/kerembey/globaltemperaturepredictionproject)) var.
 
 ## Sınırlılıklar
 
